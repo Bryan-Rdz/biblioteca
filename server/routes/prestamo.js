@@ -4,7 +4,7 @@ const Prestamo = require('../models/prestamo');
 const { verificaToken }= require('../middleware/autenticacion');
 const app = express();
 
-app.get('/prestamo',  (req, res) => {
+app.get('/prestamo', [verificaToken], (req, res) => {
     Prestamo.find()
     .exec((err, prestamos) => {
         if(err) {
@@ -23,7 +23,7 @@ app.get('/prestamo',  (req, res) => {
 });
 
 //post Agregar nuevos prestamos
-app.post('/prestamo',  (req, res) => {
+app.post('/prestamo', [verificaToken],  (req, res) => {
     let body = req.body;
 
     let prestamo = new Prestamo ({
@@ -51,7 +51,7 @@ app.post('/prestamo',  (req, res) => {
 });
 
 //put
-app.put('/prestamo/:id', function (req, res){ ///:id
+app.put('/prestamo/:id', [verificaToken], function (req, res){ ///:id
     let id = req.params.id;
     let body = _.pick(req.body, ['usuario','libro','fechaPrestamo','fechaEntrega']);
 
@@ -71,7 +71,7 @@ app.put('/prestamo/:id', function (req, res){ ///:id
   });
 
   //delete
-  app.delete('/prestamo/:id', function (req, res){
+  app.delete('/prestamo/:id', [verificaToken], function (req, res){
     let id = req.params.id;
  
  Prestamo.findByIdAndUpdate(id, { estado: false}, {new: true, runValidators: true, context: 'query' }, (err, resp)=>{

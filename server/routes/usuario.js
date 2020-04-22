@@ -7,7 +7,7 @@ const { verificaToken }= require('../middleware/autenticacion');
 
 //El servidor es un objeto 
 
-app.get('/usuario', function(req, res ){  //[verificaToken],
+app.get('/usuario', [verificaToken], function(req, res ){  
    // res.json('get Usuario Local');
   let desde = req.query.desde || 0;
   let limite = req.query.limite || 0;
@@ -65,7 +65,7 @@ app.post('/usuario', [verificaToken], function (req, res){
   
   });
   //put
-  app.put('/usuario/:id', function (req, res){
+  app.put('/usuario/:id', [verificaToken], function (req, res){
     let id = req.params.id;
     let body = _.pick(req.body, ['nombre','email']);
 
@@ -87,7 +87,7 @@ app.post('/usuario', [verificaToken], function (req, res){
 
 
   //delete
-  app.delete('/usuario/:id', function (req, res){
+  app.delete('/usuario/:id', [verificaToken], function (req, res){
    let id = req.params.id;
 
 Usuario.findByIdAndUpdate(id, { estado: false}, {new: true, runValidators: true, context: 'query' }, (err, resp)=>{

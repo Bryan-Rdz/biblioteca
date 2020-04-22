@@ -1,9 +1,10 @@
 const express = require('express');
 const _ = require('underscore');
 const app = express();
+const { verificaToken }= require('../middleware/autenticacion');
 const Categoria = require('../models/categoria');
 
-app.get('/categoria', function (req, res) {
+app.get('/categoria', [verificaToken], function (req, res) {
     Categoria.find({})
         .exec((err, categorias) => {
             if (err) {
@@ -23,7 +24,7 @@ app.get('/categoria', function (req, res) {
 
 //post Agregar nuevas categorias 
 
-app.post('/categoria', function (req, res){
+app.post('/categoria', [verificaToken], function (req, res){
     let body = req.body;
 
     let categoria = new Categoria({
@@ -48,7 +49,7 @@ app.post('/categoria', function (req, res){
 });
 
   //put
-app.put('/categoria/:id', function (req, res){
+app.put('/categoria/:id', [verificaToken], function (req, res){
     let id = req.params.id;
     let body = _.pick(req.body, ['nombre', 'usuario']);
 
@@ -69,7 +70,7 @@ app.put('/categoria/:id', function (req, res){
 });
 
   //delete
-app.delete('/categoria/:id', function (req, res){
+app.delete('/categoria/:id', [verificaToken], function (req, res){
     let id = req.params.id;
    
     Categoria.findByIdAndUpdate(id, { disponible: false }, { new: true, runValidators: true, context: 'query' }, (err, resp) => {
