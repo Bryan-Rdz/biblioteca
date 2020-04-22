@@ -51,7 +51,7 @@ app.post('/prestamo',  (req, res) => {
 });
 
 //put
-app.put('/prestamo', function (req, res){ ///:id
+app.put('/prestamo/:id', function (req, res){ ///:id
     let id = req.params.id;
     let body = _.pick(req.body, ['usuario','libro','fechaPrestamo','fechaEntrega']);
 
