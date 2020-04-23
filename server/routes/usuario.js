@@ -7,7 +7,7 @@ const { verificaToken }= require('../middleware/autenticacion');
 
 //El servidor es un objeto 
 
-app.get('/usuario', [verificaToken], function(req, res ){  
+app.get('/usuario', function(req, res ){  
    // res.json('get Usuario Local');
   let desde = req.query.desde || 0;
   let limite = req.query.limite || 0;
